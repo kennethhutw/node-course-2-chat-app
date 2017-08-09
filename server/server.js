@@ -25,14 +25,33 @@ io.on('connection', (socket)=>{
         createAt:123
     });
 
+    
+
     socket.on('createMsg',(msg)=>{
         console.log('createMsg', msg);
+        // io.emit('newMsg',{
+        //     from:msg.from,
+        //     text: msg.text,
+        //     createAt: new Date().getTime()
+        // });
+
         io.emit('newMsg',{
-            from:msg.from,
-            text: msg.text,
-            createAt: new Date().getTime()
+             from:'admin',
+             text: 'welcome to the chat room',
+             createAt: new Date().getTime()
+         });
+
+         socket.broadcast.emit('newMsg',{
+            from : 'admin',
+            text:'New user joined',
+            createAt:new Date().getTime()
         });
 
+        socket.broadcast.emit('newMsg',{
+            from : msg.from,
+            text:msg.text,
+            createAt:new Date().getTime()
+        });
     });
     socket.on('createEmail', (newEmail)=>{
         console.log('createEmail', newEmail);
