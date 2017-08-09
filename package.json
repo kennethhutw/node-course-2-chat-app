@@ -6,15 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
-    "livetest":"nodemon server/server.js"
-  
+    "livetest": "nodemon server/server.js"
   },
-  "engines":{
-    "node":"8.2.1"
+  "engines": {
+    "node": "8.2.1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "socket.io": "^1.4.8"
   }
 }
