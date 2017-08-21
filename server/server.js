@@ -29,14 +29,17 @@ io.on('connection', (socket)=>{
 socket.emit('newMessage', generateMsg('Admin','New user joined'));
     
 
-    socket.on('createMsg',(msg)=>{
+    socket.on('createMsg', (msg, callback) => {
         console.log('createMsg', msg);
+       
         // io.emit('newMsg',{
         //     from:msg.from,
         //     text: msg.text,
         //     createAt: new Date().getTime()
         // });
-        io.emit('newMsg',generateMsg(msg.from,msg.text));
+       io.emit('newMsg', generateMsg(msg.from, msg.text));
+       if(callback)
+            callback('This is from the server.');
         // io.emit('newMsg',{
         //      from:'admin',
         //      text: 'welcome to the chat room',
