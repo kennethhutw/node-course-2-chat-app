@@ -4,7 +4,7 @@ const publicPath = path.join(__dirname,'../public');
 const express = require('express');
 const socketIO = require('socket.io');
 
-const {generateMsg}= require('./utils/message');
+const {generateMsg, generateLocationMsg}= require('./utils/message');
 
 const port = process.env.PORT || 3000;
 
@@ -57,6 +57,11 @@ socket.emit('newMessage', generateMsg('Admin','New user joined'));
             text:msg.text,
             createAt:new Date().getTime()
         });
+    });
+
+    socket.on('createLocationMsg',(coords)=>{
+        console.log('createLocationMsg', coords);
+        io.emit('newLocationMsg',generateLocationMsg('Admin',coords.latitude, coords.longitude))
     });
     socket.on('createEmail', (newEmail)=>{
         console.log('createEmail', newEmail);

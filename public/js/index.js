@@ -23,12 +23,19 @@ socket.on('newEmail', function(email){
     console.log('New Email',email);
 });
 
+socket.on('newLocationMsg', function(msg){
+    var li = jQuery('<li></li>');
+    var a = jQuery('<a target="_blank">My current location</a>')
+    li.text(`${msg.from} : `);
+    a.attr('href', msg.url);
+    li.append(a);
+    jQuery('#Msgs').append(li);
+});
+
 socket.on('newMsg', function(msg){
-    console.log('newMsgggggggg', msg);
     var li = jQuery('<li></li>');
     console.log
     li.text(`${msg.from} : ${msg.text}`);
-console.log('Got1111111 it' + li.val());
     jQuery('#Msgs').append(li);
 });
 
@@ -54,4 +61,22 @@ socket.on('createMsg', function(msg){
      }, function(){
 
      });
+ });
+
+ var locationBtn = jQuery('#send-location');
+
+ locationBtn.on('click', function(){
+    if(!navigator.geolocation){
+        return alert('Geolocaiton is not supported by your browser.');
+    }
+
+    navigator.geolocation.getCurrentPosition(function(position){
+       console.log(position);
+       socket.emit('createLocationMsg',{
+          latitude:position.coords.latitude,
+          longitude: position.coords.longitude
+       });
+    }, function(){
+        alert('Unable to fetch location.');
+    })
  });
