@@ -24,31 +24,54 @@ socket.on('newEmail', function(email){
 });
 
 socket.on('newLocationMsg', function(msg){
-    var formattedTime = moment(msg.createdAt).format('h:mm a');
-    var li = jQuery('<li></li>');
-    var a = jQuery('<a target="_blank">My current location</a>');
+     var formattedTime = moment(msg.createdAt).format('h:mm a');
+      var template = jQuery('#location-template').html();
+    var html = Mustache.render(template,{
+        from: msg.from,
+        time:formattedTime,
+        location: msg.url
+    });
+      jQuery('#Msgs').append(html);
+    // var li = jQuery('<li></li>');
+    // var a = jQuery('<a target="_blank">My current location</a>');
     
    
-    li.text(`  ${msg.from} ${formattedTime} : `);
-    a.attr('href', msg.url);
-    li.append(a);
-    jQuery('#Msgs').append(li);
+    // li.text(`  ${msg.from} ${formattedTime} : `);
+    // a.attr('href', msg.url);
+    // li.append(a);
+    // jQuery('#Msgs').append(li);
 });
 
 socket.on('newMsg', function(msg){
-    var formattedTime = moment(msg.createdAt).format('h:mm a');
-    var li = jQuery('<li></li>');
+      var formattedTime = moment(msg.createdAt).format('h:mm a');
+    var template = jQuery('#msg-template').html();
+    var html = Mustache.render(template,{
+        from: msg.from,
+        time:formattedTime,
+        text: msg.text
+    });
+    jQuery('#Msgs').append(html);
+    // var formattedTime = moment(msg.createdAt).format('h:mm a');
+    // var li = jQuery('<li></li>');
 
-    li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
-    jQuery('#Msgs').append(li);
+    // li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
+    // jQuery('#Msgs').append(li);
 });
 
 socket.on('createMsg', function(msg){
- var formattedTime = moment(msg.createdAt).format('h:mm a');
-    var li = jQuery('<li></li>');
-    li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
+    var formattedTime = moment(msg.createdAt).format('h:mm a');
+    var template = jQuery('#msg-template').html();
+    var html = Mustache.render(template,{
+        from: msg.from,
+        time:formattedTime,
+        text: msg.text
+    });
+    jQuery('#Msgs').append(html);
+//  var formattedTime = moment(msg.createdAt).format('h:mm a');
+//     var li = jQuery('<li></li>');
+//     li.text(`${msg.from} ${formattedTime}: ${msg.text}`);
 
-    jQuery('#Msgs').append(li);
+//     jQuery('#Msgs').append(li);
 });
 //  socket.emit('createMsg', {
 //   from: 'Frank',
