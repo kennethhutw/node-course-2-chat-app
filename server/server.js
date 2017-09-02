@@ -39,7 +39,7 @@ socket.emit('newMessage', generateMsg('Admin','New user joined'));
         // });
        io.emit('newMsg', generateMsg(msg.from, msg.text));
        if(callback)
-            callback('This is from the server.');
+            callback();
         // io.emit('newMsg',{
         //      from:'admin',
         //      text: 'welcome to the chat room',

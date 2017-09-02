@@ -12,7 +12,7 @@
                      from:'Kenneth',
                      text:'Hey That works for me'
                  }, function (data) {
-   console.log('Got it', data);
+                      console.log('Got it', data);
 });
             });
             socket.on('disconnect',function(){
@@ -55,11 +55,12 @@ socket.on('createMsg', function(msg){
 
  jQuery('#msg-form').on('submit', function(e){
      e.preventDefault();
+     var msgTextBox = jQuery('[name=msg]');
      socket.emit('createMsg',{
          from:'user',
-         text:jQuery('[name=msg]').val()
+         text:msgTextBox.val()
      }, function(){
-
+         msgTextBox.val('')
      });
  });
 
@@ -70,13 +71,17 @@ socket.on('createMsg', function(msg){
         return alert('Geolocaiton is not supported by your browser.');
     }
 
+    locationBtn.attr('disabled','disabled').text('Sending location...');
+
     navigator.geolocation.getCurrentPosition(function(position){
        console.log(position);
+       locationBtn.removeAttr('disabled').text('Send location');
        socket.emit('createLocationMsg',{
           latitude:position.coords.latitude,
           longitude: position.coords.longitude
        });
     }, function(){
+         locationBtn.removeAttr('disabled').text('Send location');;
         alert('Unable to fetch location.');
     })
  });
