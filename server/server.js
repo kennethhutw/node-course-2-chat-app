@@ -61,12 +61,17 @@ io.on('connection', (socket) => {
     socket.on('createMsg', (msg, callback) => {
         console.log('createMsg', msg);
 
+        var user = users.getUser(socket.id);
+        if(user && isRealString(msg.text)){
+                io.to(user.room).emit('newMsg', generateMsg(user.name, msg.text));
+        }
+
         // io.emit('newMsg',{
         //     from:msg.from,
         //     text: msg.text,
         //     createAt: new Date().getTime()
         // });
-        io.emit('newMsg', generateMsg(msg.from, msg.text));
+        
         if (callback)
             callback();
         // io.emit('newMsg',{
@@ -90,7 +95,12 @@ io.on('connection', (socket) => {
 
     socket.on('createLocationMsg', (coords) => {
         console.log('createLocationMsg', coords);
-        io.emit('newLocationMsg', generateLocationMsg('Admin', coords.latitude, coords.longitude))
+        var user = users.getUser(socket.id);
+        if(user ){
+                io.to(user.room).emit('newLocationMsg', generateLocationMsg(user.name, coords.latitude, coords.longitude));
+        }
+
+        
     });
     socket.on('createEmail', (newEmail) => {
         console.log('createEmail', newEmail);
